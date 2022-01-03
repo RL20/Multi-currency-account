@@ -1,41 +1,56 @@
 //clo
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import currencyRoot from "../api/currencyRoot";
+import { getRate, getCurrencies } from "../api/currencyApi";
 import Inputs from "./Inputs";
 import ShowList from "./ShowList";
 
-function ConvertionList() {
-  const [currencies, setCurrency] = useState([]);
-  const [countries, setCountries] = useState([]);
+function ConvertionList({ text, parentCallBack, placeholder }) {
+  const [currencies, setCurrencies] = useState(null);
+  const [countries, setCountries] = useState(null);
   const [searchField, setSearchField] = useState("");
+  const [id, setId] = useState("");
 
   useEffect(() => {
-    if (localStorage.getItem("val") === null) {
-      const fetchData = async () => {
-        const { data } = await currencyRoot.get(`currencies`, {});
-        // const val = Object.keys(data.results);
-        const val = Object.values(data.results);
-        const countriesName = val.map((county) => `${county.id}-${county.currencyName}`);
-        setCountries(countriesName);
-        setCurrency(val);
-        localStorage.setItem("val", JSON.stringify(val));
-        localStorage.setItem("countriesName", JSON.stringify(countriesName));
-      };
-      fetchData();
-    }
+    const currenciesFromApi = async () => {
+      const currenciesObj = await getCurrencies();
+      const values = Object.values(currenciesObj.results); //get object
+      const countriesName = values.map((county) => `${county.id}-${county.currencyName}`);
+      setCountries(countriesName);
+      setCurrencies(values);
+    };
+    currenciesFromApi();
+    return () => {};
   }, []);
+
+  useEffect(() => {
+    parentCallBack(id);
+  }, [id]);
+
   const handelInput = (input) => {
     setSearchField(input);
   };
-  const c = JSON.parse(localStorage.getItem("val"));
-  const res = c && c.filter((country) => country.id.toLowerCase().startsWith(searchField.toLowerCase()) || country.currencyName.toLowerCase().startsWith(searchField.toLowerCase()));
-  // const res = currencies && currencies.filter((country) => country.id.toLowerCase().startsWith(searchField.toLowerCase()) || country.currencyName.toLowerCase().startsWith(searchField.toLowerCase()));
+  const getSelected = (childData) => {
+    setId(childData);
+  };
 
+  // const c = JSON.parse(localStorage.getItem("val"));
+  const res = currencies && currencies.filter((country) => country.id.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()) || country.currencyName.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()));
+  // const res = c && c.filter((country) => country.id.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()) || country.currencyName.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()));
+
+  // const res = c && c.filter((country) => country.id.toLowerCase().includes(searchField.toLowerCase()));
+  // const res = c && c.filter((country) => country.id.toLowerCase().startsWith(searchField.toLowerCase()) || country.currencyName.toLowerCase().startsWith(searchField.toLowerCase()));
+  // const res = currencies && currencies.filter((country) => country.id.toLowerCase().startsWith(searchField.toLowerCase()) || country.currencyName.toLowerCase().startsWith(searchField.toLowerCase()));
+  // console.log(`res`, res);
+  currencies && console.log(`currencies`, currencies);
+  // countries && console.log(`countries`, countries);
+  id && console.log("idddddddd", id);
   return (
     <div>
-      <Inputs text="Search" parentCallBack={handelInput} />
-      <ShowList item={res} />
+      <Inputs text={text} parentCallBack={handelInput} placeholder={placeholder} />
+      {currencies && <ShowList options={res} getSelected={getSelected} />}
+
+      {/* if(res.length===1) */}
+      {/* <ShowList options={res} parentCallBack={parentCallBack} /> */}
     </div>
   );
 }

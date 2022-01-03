@@ -1,7 +1,9 @@
 //clo rfce
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import currencyRoot from "../api/currencyRoot";
+import { getRate, getCurrencies } from "../api/currencyApi";
+import UserInfo from "./UserInfo";
+import Header from "./Header";
+import Log from "./Log";
 import ConvertionList from "./ConvertionList";
 import Account from "./Account";
 import "../styles/App.css";
@@ -10,25 +12,29 @@ import Inputs from "./Inputs";
 function App() {
   const [currency, setCurrency] = useState("");
   const [searchField, setSearchField] = useState("");
+  const [curencyID, setCurencyID] = useState("");
+  const [ratePairs, setRatePairs] = useState("");
 
-  useEffect(() => {
-    if (localStorage.getItem("data") === null) {
-      let shouldRun = true;
-      const fetchConvertData = async () => {
-        const { data } = await currencyRoot.get(`convert`, {
-          params: {
-            q: "USD_ILS,ILS_USD",
-          },
-        });
-        shouldRun && setCurrency(data);
-        localStorage.setItem("data", JSON.stringify(data));
-      };
-      fetchConvertData();
-      return () => {
-        shouldRun = false;
-      };
-    }
-  }, []);
+  //!------------------------------
+  // useEffect(() => {
+  //   if (localStorage.getItem("data") === null) {
+  //     let shouldRun = true;
+  //     const fetchConvertData = async () => {
+  //       const { data } = await currencyRoot.get(`convert`, {
+  //         params: {
+  //           q: "USD_ILS,ILS_USD",
+  //         },
+  //       });
+  //       shouldRun && setCurrency(data);
+  //       localStorage.setItem("data", JSON.stringify(data));
+  //     };
+  //     fetchConvertData();
+  //     return () => {
+  //       shouldRun = false;
+  //     };
+  //   }
+  // }, []);
+  //!-----------------------
   // useEffect(() => {
   //   let shouldRun = true;
   //   const fetchConvertData = async () => {
@@ -45,21 +51,50 @@ function App() {
   //   };
   // }, []);
 
+  useEffect(() => {
+    const currenciesFromApi = async () => {
+      const rate = await getRate();
+      setRatePairs(rate);
+    };
+    currenciesFromApi();
+    return () => {};
+  }, []);
+
   const handelInput = (input) => {
     setSearchField(input);
   };
-  console.log("currency*****88*****", JSON.parse(localStorage.getItem("data")));
-
+  const getCurencyId = (childDta) => {
+    setCurencyID(childDta);
+  };
+  //!--------------
+  const currencyObj = JSON.parse(localStorage.getItem("data"));
+  const vall = Object.values(currencyObj);
+  //!--------------
+  console.log(`object`, vall[0]);
+  console.log(`curencyID`, curencyID);
   return (
     <div>
-      heooo
-      <div className="convert">
-        <Inputs text="Amount" parentCallBack={handelInput} />
-        <ConvertionList />
-        <ConvertionList />
-        Total {}
-      </div>
-      <Account id={1} />
+      {/* <Log /> */}
+      <Header />
+      {/* <UserInfo id={1} /> */}
+      <Account id={1} rate={2} />
+
+      {/* <div className="convert">
+        <Inputs text="Amount" parentCallBack={handelInput} value={searchField} />
+        <br />
+        <br />
+        <ConvertionList text="Convert To" parentCallBack={getCurencyId} />
+        <h2> Total {searchField}</h2>
+      </div> */}
+      {/* <div className="convert">
+        <Inputs text="Amount" parentCallBack={handelInput} value={searchField} />
+        <br />
+        <br />
+        <ConvertionList text="From" parentCallBack={getCurencyId} />
+        <ConvertionList text="To" parentCallBack={getCurencyId} />
+        <br />
+        <h2> Total {searchField}</h2>
+      </div> */}
     </div>
   );
 }

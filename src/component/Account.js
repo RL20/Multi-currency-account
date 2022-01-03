@@ -1,25 +1,101 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { getRate, getCurrencies } from "../api/currencyApi";
+import { updateUser } from "../api/accountApi";
+import Inputs from "./Inputs";
+import { getUser } from "../api/accountApi";
+import ConvertionList from "./ConvertionList";
 
-import accountRoot from "../api/accountRoot";
-
-// function Account({ name, amount, balance, currency, email, token, id }) {
-function Account({ id }) {
+function Account({ id, rate }) {
   const [user, setUser] = useState("");
+  const [currency, setCurrency] = useState("");
+  const [searchField, setSearchField] = useState("");
+  const [curencyID, setCurencyID] = useState("");
+  const [ratePairs, setRatePairs] = useState("");
+  const [show, setShow] = useState(true);
+  const [message, setMessage] = useState("");
+  useEffect(() => {
+    const userFromApi = async () => {
+      const us = await getUser(id);
+      setUser(us);
+    };
+    userFromApi();
+    return () => {};
+  }, [id]);
 
   useEffect(() => {
-    const fetchUsertData = async () => {
-      const { data } = await accountRoot.get(`account/${id}`);
-      console.log("data", data);
-      setUser(data);
+    if (!user) return;
+    if (convertTosameCurrency) {
+      setMessage("you can't convert to same currency");
+      return;
+    }
+    setMessage("");
+    const currenciesFromApi = async () => {
+      const rate = await getRate(`${user.currencyName}_${curencyID}`);
+      setRatePairs(rate);
     };
-    fetchUsertData();
+    setShow(true);
+    currenciesFromApi();
     return () => {};
-  }, []);
+  }, [curencyID]);
 
-  // return <div>{<h1>your Blance is {user.balance} </h1>}</div>;
+  const handelInput = (input) => {
+    setSearchField(input);
+  };
+  const getCurencyId = (childDta) => {
+    setCurencyID(childDta);
+  };
 
-  return <div>{user && <h1>your Blance is {Number(user.balance) / 2}</h1>}</div>;
+  const fee = (fee, money) => {
+    return (fee / 100) * money;
+  };
+  const total = (fee, money) => {
+    return money - fee;
+  };
+  const insert = async (balance, currencyName) => {
+    if (convertTosameCurrency) {
+      return;
+    }
+    const historyObg = { fromCurrency: `${user.balance} ${user.currencyName}`, to: `${balance} ${currencyName}`, fee: userFee, rate: ratePairs, operationTime: new Date() };
+    const newHistory = [...user.history, historyObg];
+    const obj = { balance: parseFloat(balance), currencyName: `${currencyName}`, history: newHistory };
+    const newUser = await updateUser(id, obj);
+    setUser(newUser);
+    setShow(false);
+  };
+  const toShow = () => {
+    setShow(!show);
+  };
+  const userInfo = user && `Multy Blance is ${user.balance.toFixed(2)} ${user.currencyName} `;
+
+  const userRate = (user.balance * ratePairs).toFixed(2);
+  const userFee = fee(user.fee, user.balance * ratePairs).toFixed(2);
+  const userTotal = total(userFee, user.balance * ratePairs).toFixed(2);
+  const convertTosameCurrency = user.currencyName === curencyID;
+  // const userInfo = user && `Multy Blance is ${user.balance.toFixed(2)} ${user.currencyName} `;
+  // const userRate = user && curencyID && ` Rate :${curencyID} ${(user.balance * ratePairs).toFixed(2)}`;
+  // const userFee = user && curencyID && `Fee: ${fee(user.fee, user.balance * ratePairs).toFixed(2)}`;
+  // const userTotal = user && curencyID && `Total: ${total(fee(user.fee, user.balance * ratePairs), user.balance * ratePairs).toFixed(2)}`;
+
+  return (
+    <div>
+      <div>{user && <h1>{userInfo}</h1>}</div>
+      <div className="convert">
+        <ConvertionList parentCallBack={getCurencyId} placeholder="Search Currency" />
+        <h3>{message}</h3>
+        <h3>{user && curencyID && show && !convertTosameCurrency && `Rate  : ${userRate} ${curencyID}`}</h3>
+        <h3>{user && curencyID && show && !convertTosameCurrency && `Fee   : ${userFee} ${curencyID}`}</h3>
+        <h3>{user && curencyID && show && !convertTosameCurrency && `Total : ${userTotal} ${curencyID}`}</h3>
+
+        <button
+          onClick={() => {
+            insert(userTotal, `${curencyID}`);
+          }}
+        >
+          Confirm convartion
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default Account;
