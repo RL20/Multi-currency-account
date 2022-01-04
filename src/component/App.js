@@ -8,6 +8,7 @@ import ConvertionList from "./ConvertionList";
 import Account from "./Account";
 import "../styles/App.css";
 import Inputs from "./Inputs";
+import Rates from "./Rates";
 
 function App() {
   const [currency, setCurrency] = useState("");
@@ -76,6 +77,7 @@ function App() {
     <div>
       {/* <Log /> */}
       <Header />
+      {/* <Rates /> */}
       {/* <UserInfo id={1} /> */}
       <Account id={1} rate={2} />
 

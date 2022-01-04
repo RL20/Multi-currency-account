@@ -1,51 +1,46 @@
 import React, { useState } from "react";
 import { useEffect } from "react/cjs/react.development";
+import { Dropdown } from "semantic-ui-react";
+import countriesCodes from "../countriesCode.js";
+// const countryOptions = [
+//   { key: "af", value: "af", flag: "af", text: "Afghanistan" },
+//   { key: "ax", value: "ax", flag: "ax", text: "Aland Islands" },
+//   { key: "al", value: "al", flag: "al", text: "Albania" },
+// ];
+const countriesCodesObj = countriesCodes.reduce((acc, cur) => {
+  return { ...acc, [cur.alphaCurrencyCode]: cur };
+}, {});
 
 const ShowList = ({ options, getSelected }) => {
+  const DropdownExampleSearchSelection = () => <Dropdown placeholder="Select Country" fluid search selection options={countryOptions} onChange={handleDropDownSelect} />;
   console.log(`show`);
   const [selectedOption, setSelectedOption] = useState("");
-  // const [selectedOption, setSelectedOption] = useState(options[0] ? options[0].value : "");
-  // const [selectedOption, setSelectedOption] = useState(options[0].value);
   console.log(`selected`, selectedOption);
   useEffect(() => {
     getSelected(selectedOption);
-  }, [getSelected, selectedOption]);
-  return (
-    <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
-      <option value="" disabled>
-        select your currency
-      </option>
-      {options.map((country, i) => (
-        <option key={i} value={country.id}>
-          {country.currencyName}
-        </option>
-      ))}
-    </select>
-  );
-  // return (
-  //   <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
-  //     {options.length &&
-  //       options.map((country, i) => (
-  //         <option key={i} value={country.id}>
-  //           {country.currencyName}
-  //         </option>
-  //       ))}
-  //   </select>
-  // );
+  }, [getSelected, options, selectedOption]);
 
-  //!
+  const countryOptions = options.map((country, i) => {
+    console.log(`country.id.`, country.id);
+    const flg = countriesCodesObj[country.id] ? countriesCodesObj[country.id].alpha2.toLowerCase() : "";
+    return { key: country.id, value: country.id, flag: flg, text: `${country.id}-${country.currencyName}` };
+  });
+  const handleDropDownSelect = (event, data) => {
+    console.log("data.value", data.value);
+    setSelectedOption(data.value);
+  };
+  console.log(`countriesCodes`, countriesCodesObj);
+  // console.log(`countriesCodes`, countriesCodes);
+  return <>{DropdownExampleSearchSelection()}</>;
   // return (
-  //   <div>
-  //     <select>
-  //       {item.map((country, i) => (
-  //         <option key={i} value={item.id}>
-  //           {country.currencyName}
-  //         </option>
-  //       ))}
-  //     </select>
-  //   </div>
+  //   <ul>
+  //     {options.map((country, i) => (
+  //       <li key={i} onClick={() => setSelectedOption(country.id)}>
+  //         {country.currencyName}
+  //       </li>
+  //     ))}
+  //   </ul>
   // );
-  //!
 };
 
 export default ShowList;

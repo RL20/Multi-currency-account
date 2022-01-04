@@ -33,15 +33,24 @@ function ConvertionList({ text, parentCallBack, placeholder }) {
     setId(childData);
   };
 
-  const res = currencies && currencies.map((country) => country);
-  // const res = currencies && currencies.filter((country) => country.id.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()) || country.currencyName.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()));
+  // const c = JSON.parse(localStorage.getItem("val"));
+  const res = currencies && currencies.filter((country) => country.id.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()) || country.currencyName.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()));
+  // const res = c && c.filter((country) => country.id.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()) || country.currencyName.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()));
 
+  // const res = c && c.filter((country) => country.id.toLowerCase().includes(searchField.toLowerCase()));
+  // const res = c && c.filter((country) => country.id.toLowerCase().startsWith(searchField.toLowerCase()) || country.currencyName.toLowerCase().startsWith(searchField.toLowerCase()));
+  // const res = currencies && currencies.filter((country) => country.id.toLowerCase().startsWith(searchField.toLowerCase()) || country.currencyName.toLowerCase().startsWith(searchField.toLowerCase()));
+  // console.log(`res`, res);
   currencies && console.log(`currencies`, currencies);
+  // countries && console.log(`countries`, countries);
   id && console.log("idddddddd", id);
   return (
     <div>
-      {/* <Inputs text={text} parentCallBack={handelInput} placeholder={placeholder} /> */}
+      <Inputs text={text} parentCallBack={handelInput} placeholder={placeholder} />
       {currencies && <ShowList options={res} getSelected={getSelected} />}
+
+      {/* if(res.length===1) */}
+      {/* <ShowList options={res} parentCallBack={parentCallBack} /> */}
     </div>
   );
 }
