@@ -1,5 +1,4 @@
 .convert {
-  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,6 +6,7 @@
   text-align: center;
   gap: 15px;
   height: 100%;
+  height: calc(100% - 84.5px);
   text-shadow: 1px 1px #ccc;
 }
 
@@ -31,4 +31,32 @@
 }
 .convert button:hover {
   background: #3a7267;
+}
+@media screen and (max-width: 600px) {
+  .account-input {
+    width: 88%;
+  }
+
+  .account-input-wraper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .ui.search.dropdown > .text {
+    bottom: 19px;
+  }
+  /* .ui.search.dropdown > .text {
+    cursor: text;
+    position: relative;
+    left: 23px;
+    bottom: 20px;
+    z-index: 3;
+  }
+  .ui.search.dropdown > .text {
+    cursor: text;
+    position: relative;
+    left: 81px;
+    bottom: 34px;
+    z-index: 3;
+  } */
 }

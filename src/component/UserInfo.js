@@ -69,7 +69,7 @@ function UserInfo({ id }) {
 
   return (
     <div className="user-info">
-      <div>{user && <h3>{userInfo}</h3>}</div>
+      <div>{user && <h2>{userInfo}</h2>}</div>
       <div>{user && <h3>{userFee}</h3>}</div>
       <div>{user && history()}</div>
     </div>

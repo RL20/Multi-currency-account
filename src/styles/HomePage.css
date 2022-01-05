@@ -1,5 +1,6 @@
 .main-homepage {
   background: url(../images/pexels-indra-gunawan-313032.jpg);
+  background-size: cover;
   height: 91vh;
   position: relative;
 }

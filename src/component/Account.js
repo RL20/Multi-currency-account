@@ -6,7 +6,7 @@ import Inputs from "./Inputs";
 import { getUser } from "../api/accountApi";
 import ConvertionList from "./ConvertionList";
 import "../styles/Account.css";
-
+import "../styles/flags.css";
 function Account({ id, rate }) {
   const [user, setUser] = useState("");
   const [currency, setCurrency] = useState("");
@@ -86,7 +86,11 @@ function Account({ id, rate }) {
     <div className="convert">
       <div>{user && <h1>{userInfo}</h1>}</div>
       <div>
-        <ConvertionList parentCallBack={getCurencyId} placeholder="Search Currency" />
+        <div className="account-input-wraper">
+          <div className="account-input">
+            <ConvertionList parentCallBack={getCurencyId} placeholder="Search Currency" />
+          </div>
+        </div>
         <h3>{message}</h3>
         <h3>{user && curencyID && show && !convertTosameCurrency && `Rate  : ${userRate} ${curencyID}`}</h3>
         <h3>{user && curencyID && show && !convertTosameCurrency && `Fee   : ${userFee} ${curencyID}`}</h3>
