@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { getUser } from "../api/accountApi";
 import "../styles/UserInfo.css";
 function UserInfo({ id }) {
