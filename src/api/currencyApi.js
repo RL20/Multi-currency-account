@@ -14,14 +14,14 @@ const api = axios.create({
 
 export const getRate = async (str) => {
   try {
-    console.log(`str`, str);
+    // console.log(`str`, str);
     const { data } = await api.get(`convert`, {
       params: {
         q: str,
         // q: "USD_ILS,ILS_USD",
       },
     });
-    console.log("dataggggggggggg", data);
+    // console.log("dataggggggggggg", data);
     return data[str];
   } catch (e) {
     console.log(e.message);
@@ -29,7 +29,7 @@ export const getRate = async (str) => {
 };
 export const getRateObj = async (str) => {
   try {
-    console.log(`str`, str);
+    // console.log(`str`, str);
     const { data } = await api.get(`convert`, {
       params: {
         q: str,

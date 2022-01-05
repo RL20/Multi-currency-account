@@ -11,9 +11,9 @@ function Rates() {
   const [currencies, setCurrencies] = useState(null);
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
-  const [tempCode, setTempCode] = useState("");
   const [id, setId] = useState("");
   const [message, setMessage] = useState("Getting exchange rate...");
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     const currenciesFromApi = async () => {
@@ -39,7 +39,7 @@ function Rates() {
     currenciesFromApi();
     return () => {};
   }, []);
-  console.log(`currencies`, currencies);
+  // console.log(`currencies`, currencies);
   const cur =
     currencies &&
     currencies.map((country, i) => {
@@ -52,9 +52,11 @@ function Rates() {
   const res = currencies && currencies.map((country) => country);
 
   const getSelectedFrom = (childData) => {
+    console.log(`childData`, childData);
     setFromCurrency(childData);
   };
   const getSelectedTo = (childData) => {
+    console.log(`childData`, childData);
     setToCurrency(childData);
   };
   const insert = async (e) => {
@@ -65,13 +67,29 @@ function Rates() {
     let msg = "There was a problem procces your request please try again";
     console.log(`ratePairsLength`, ratePairsLength);
     if (ratePairsLength === 2) {
-      msg = `1 ${fromCurrency} = ${ratePairs[`${fromCurrency}_${toCurrency}`]} ${toCurrency}
-    1 ${toCurrency} = ${ratePairs[`${toCurrency}_${fromCurrency}`]} ${fromCurrency}`;
+      const msg1 = `1 ${fromCurrency} = ${ratePairs[`${fromCurrency}_${toCurrency}`]} ${toCurrency}`;
+      const msg2 = ` 1 ${toCurrency} = ${ratePairs[`${toCurrency}_${fromCurrency}`]} ${fromCurrency}`;
+      msg = msg1 + "\t\t\t" + msg2;
+
+      //   msg = `1 ${fromCurrency} = ${ratePairs[`${fromCurrency}_${toCurrency}`]} ${toCurrency}
+      // 1 ${toCurrency} = ${ratePairs[`${toCurrency}_${fromCurrency}`]} ${fromCurrency}`;
     } else if (ratePairsLength === 1) {
-      msg = `1 ${fromCurrency} = ${ratePairs[`${fromCurrency}_${toCurrency}`]} ${toCurrency}`;
+      if (toCurrency && toCurrency) msg = `1 ${fromCurrency} = ${ratePairs[`${fromCurrency}_${toCurrency}`]} ${toCurrency}`;
+      else msg = "Please select currencies from the list";
     }
     setMessage(msg);
   };
+  const handelInput = (input) => {
+    setInputValue(input);
+  };
+  const switchOrder = () => {
+    const temp = fromCurrency;
+    setFromCurrency(toCurrency);
+    setToCurrency(temp);
+  };
+  const rateFromInput = inputValue && ratePairs && inputValue * ratePairs[`${fromCurrency}_${toCurrency}`].toFixed(2);
+  const rateFromInputPrint = `${inputValue} ${fromCurrency} = ${rateFromInput} ${toCurrency} `;
+  console.log("rateFromInput", typeof rateFromInput);
   return (
     <div className="main">
       <div class="wrapper">
@@ -79,19 +97,19 @@ function Rates() {
         <form action="#">
           <div class="amount">
             <p>Enter Amount</p>
-            <input type="text" />
+            <input type="text" onChange={(e) => handelInput(e.target.value)} />
           </div>
           <div class="drop-list">
             <div class="from">
               <p>From</p>
               <div class="select-box">
-                {currencies && <ShowList options={res} getSelected={getSelectedFrom} />}
+                {currencies && <ShowList options={res} getSelected={getSelectedFrom} valueFromfather={fromCurrency} />}
                 {/* <img src="https://flagcdn.com/48x36/us.png" alt="flag" />
                 <select> {cur} </select> */}
                 {/*<select> {<!-- Options tag are inserted from JavaScript -->} </select>*/}
               </div>
             </div>
-            <div class="icon" onClick={1}>
+            <div class="icon" onClick={switchOrder}>
               <i class="fas fa-exchange-alt"></i>
             </div>
             <div class="to">
@@ -99,11 +117,12 @@ function Rates() {
               <div class="select-box">
                 {/* <img src="https://flagcdn.com/48x36/np.png" alt="flag" />
                 <select> {cur}</select> */}
-                {currencies && <ShowList options={res} getSelected={getSelectedTo} />}
+                {currencies && <ShowList options={res} getSelected={getSelectedTo} valueFromfather={toCurrency} />}
               </div>
             </div>
           </div>
           <div class="exchange-rate">{message}</div>
+          <div class="exchange-rate">{inputValue && rateFromInputPrint}</div>
           <button onClick={insert}>Get Exchange Rate</button>
         </form>
       </div>

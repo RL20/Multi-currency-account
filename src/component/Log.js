@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/Log.css";
+// import "../styles/Log.css";
 function Log() {
   return (
     <div className="login-wrap">

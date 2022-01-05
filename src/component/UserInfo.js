@@ -4,11 +4,12 @@ import "../styles/UserInfo.css";
 function UserInfo({ id }) {
   // const show = useRef(false);
   const [user, setUser] = useState("");
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState([]);
   useEffect(() => {
     const userFromApi = async () => {
       const us = await getUser(id);
       setUser(us);
+      setShow(Array(us.history.length).fill(false));
     };
     userFromApi();
     return () => {};
@@ -19,8 +20,11 @@ function UserInfo({ id }) {
     `Personal Fee : ${user.fee}% from the transaction 
    Withdraw Fee :0.01% 
     Deposit Fee : free`;
-  const style = () => {
-    setShow(!show);
+  const style = (index) => {
+    console.log(`show`, show);
+    const newShow = show.map((e) => false); //init to false
+    newShow[index] = !show[index];
+    setShow(newShow);
   };
   const history = () => {
     return (
@@ -39,7 +43,7 @@ function UserInfo({ id }) {
             {user.history.length !== 0 &&
               user.history.map((line, i) => {
                 return (
-                  <tr className={show ? "" : "active-row"} key={i} onClick={style}>
+                  <tr className={show[i] ? "active-row" : ""} key={i} onClick={() => style(i)}>
                     <td> {line.fromCurrency}</td>
                     <td> {line.to}</td>
                     <td> {line.fee}</td>

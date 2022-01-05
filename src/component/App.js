@@ -9,6 +9,7 @@ import Account from "./Account";
 import "../styles/App.css";
 import Inputs from "./Inputs";
 import Rates from "./Rates";
+// import Login from "./Login";
 
 function App() {
   const [currency, setCurrency] = useState("");
@@ -71,13 +72,13 @@ function App() {
   const currencyObj = JSON.parse(localStorage.getItem("data"));
   const vall = Object.values(currencyObj);
   //!--------------
-  console.log(`object`, vall[0]);
-  console.log(`curencyID`, curencyID);
+
   return (
     <div className="App">
       {/* <Log /> */}
+      {/* <Login /> */}
       <Header />
-      {/* <Rates /> */}
+      <Rates />
       <UserInfo id={1} />
       <Account id={1} rate={2} />
 
