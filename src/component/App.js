@@ -74,11 +74,11 @@ function App() {
   console.log(`object`, vall[0]);
   console.log(`curencyID`, curencyID);
   return (
-    <div>
+    <div className="App">
       {/* <Log /> */}
       <Header />
       {/* <Rates /> */}
-      {/* <UserInfo id={1} /> */}
+      <UserInfo id={1} />
       <Account id={1} rate={2} />
 
       {/* <div className="convert">

@@ -13,7 +13,7 @@
   justify-content: center;
   min-height: 100vh;
   padding: 0 10px;
-  background: #675afe;
+  background: #fff;
 }
 ::selection {
   color: #fff;
@@ -54,6 +54,7 @@ form input {
 form input:focus {
   padding: 0 14px;
   border: 2px solid #675afe;
+  border: 2px solid #009879;
 }
 form .drop-list {
   display: flex;
@@ -106,8 +107,39 @@ form button {
   font-size: 17px;
   cursor: pointer;
   background: #675afe;
+  background: #009879;
   transition: 0.3s ease;
 }
 form button:hover {
   background: #4534fe;
+  background: #3a7267;
 }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* .topnav a.active {
+  background-color: #04aa6d;
+  color: white;
+} */

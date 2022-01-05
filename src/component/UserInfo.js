@@ -24,7 +24,7 @@ function UserInfo({ id }) {
   };
   const history = () => {
     return (
-      <div>
+      <div className="user-info">
         <table className="styled-table">
           <thead>
             <tr>

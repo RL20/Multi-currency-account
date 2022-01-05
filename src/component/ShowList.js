@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react/cjs/react.development";
 import { Dropdown } from "semantic-ui-react";
 import countriesCodes from "../countriesCode.js";
-// const countryOptions = [
-//   { key: "af", value: "af", flag: "af", text: "Afghanistan" },
-//   { key: "ax", value: "ax", flag: "ax", text: "Aland Islands" },
-//   { key: "al", value: "al", flag: "al", text: "Albania" },
-// ];
+
 const countriesCodesObj = countriesCodes.reduce((acc, cur) => {
   return { ...acc, [cur.alphaCurrencyCode]: cur };
 }, {});
@@ -30,17 +26,7 @@ const ShowList = ({ options, getSelected }) => {
     setSelectedOption(data.value);
   };
   console.log(`countriesCodes`, countriesCodesObj);
-  // console.log(`countriesCodes`, countriesCodes);
   return <>{DropdownExampleSearchSelection()}</>;
-  // return (
-  //   <ul>
-  //     {options.map((country, i) => (
-  //       <li key={i} onClick={() => setSelectedOption(country.id)}>
-  //         {country.currencyName}
-  //       </li>
-  //     ))}
-  //   </ul>
-  // );
 };
 
 export default ShowList;

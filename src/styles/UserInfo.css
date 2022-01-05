@@ -1,3 +1,10 @@
+.user-info {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 h3 {
   font-family: sans-serif;
 }

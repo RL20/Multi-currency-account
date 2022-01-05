@@ -5,6 +5,7 @@ import { updateUser } from "../api/accountApi";
 import Inputs from "./Inputs";
 import { getUser } from "../api/accountApi";
 import ConvertionList from "./ConvertionList";
+import "../styles/Account.css";
 
 function Account({ id, rate }) {
   const [user, setUser] = useState("");
@@ -14,6 +15,7 @@ function Account({ id, rate }) {
   const [ratePairs, setRatePairs] = useState("");
   const [show, setShow] = useState(true);
   const [message, setMessage] = useState("");
+
   useEffect(() => {
     const userFromApi = async () => {
       const us = await getUser(id);
@@ -66,26 +68,24 @@ function Account({ id, rate }) {
   const toShow = () => {
     setShow(!show);
   };
-  const userInfo = user && `Multy Blance is ${user.balance.toFixed(2)} ${user.currencyName} `;
+  // const formaterObj = {
+  //   style: "currency",
+  //   currency: curencyID,
+  //   maximumFractionDigits: 2,
+  // };
+  // const formatter = new Intl.NumberFormat("en-US", formaterObj);
+  // const userInfo = user && `Multy Blance is ${formatter.format(user.balance)} ${user.currencyName} `;
+  const userInfo = user && `Multi Balance is ${user.balance.toFixed(2)} ${user.currencyName} `;
 
   const userRate = (user.balance * ratePairs).toFixed(2);
   const userFee = fee(user.fee, user.balance * ratePairs).toFixed(2);
   const userTotal = total(userFee, user.balance * ratePairs).toFixed(2);
   const convertTosameCurrency = user.currencyName === curencyID;
 
-  // const countryOptions = [
-  //   { key: "af", value: "af", flag: "af", text: "Afghanistan" },
-  //   { key: "ax", value: "ax", flag: "ax", text: "Aland Islands" },
-  //   { key: "al", value: "al", flag: "al", text: "Albania" },
-  // ];
-
-  // const DropdownExampleSearchSelection = () => <Dropdown placeholder="Select Country" fluid search selection options={countryOptions} />;
-
   return (
-    <div>
+    <div className="convert">
       <div>{user && <h1>{userInfo}</h1>}</div>
-      {/* <div class="currency-flag currency-flag-usd"></div> */}
-      <div className="convert">
+      <div>
         <ConvertionList parentCallBack={getCurencyId} placeholder="Search Currency" />
         <h3>{message}</h3>
         <h3>{user && curencyID && show && !convertTosameCurrency && `Rate  : ${userRate} ${curencyID}`}</h3>
@@ -97,7 +97,7 @@ function Account({ id, rate }) {
             insert(userTotal, `${curencyID}`);
           }}
         >
-          Confirm convartion
+          Confirm Convertion
         </button>
       </div>
     </div>

@@ -37,7 +37,6 @@ function ConvertionList({ text, parentCallBack, placeholder }) {
   // const res = currencies && currencies.filter((country) => country.id.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()) || country.currencyName.replace(/ /g, "").toLowerCase().includes(searchField.toLowerCase()));
 
   currencies && console.log(`currencies`, currencies);
-  id && console.log("idddddddd", id);
   return (
     <div>
       {/* <Inputs text={text} parentCallBack={handelInput} placeholder={placeholder} /> */}
