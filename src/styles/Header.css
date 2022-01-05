@@ -3,9 +3,11 @@
   display: flex;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  height: 6rem;
-  position: fixed;
+  /* height: 6rem; */
+  height: 9vh;
+  position: sticky;
   width: 100%;
+  z-index: 10;
 }
 .topnav {
   overflow: hidden;
@@ -35,6 +37,11 @@
 }
 
 .topnav a.active {
+  background-color: #04aa6d;
+  background-color: #009879;
+  color: white;
+}
+.home-link {
   background-color: #04aa6d;
   background-color: #009879;
   color: white;

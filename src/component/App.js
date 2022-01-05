@@ -1,105 +1,52 @@
 //clo rfce
-import React, { useState, useEffect } from "react";
-import { getRate, getCurrencies } from "../api/currencyApi";
+import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import UserInfo from "./UserInfo";
 import Header from "./Header";
-import Log from "./Log";
-import ConvertionList from "./ConvertionList";
+
 import Account from "./Account";
 import "../styles/App.css";
-import Inputs from "./Inputs";
 import Rates from "./Rates";
+import NotFound from "./NotFound";
+import Homepage from "./Homepage";
+import Login from "./Login";
+import Register from "./Register";
+// import Login from "./Login";
 // import Login from "./Login";
 
 function App() {
-  const [currency, setCurrency] = useState("");
-  const [searchField, setSearchField] = useState("");
-  const [curencyID, setCurencyID] = useState("");
-  const [ratePairs, setRatePairs] = useState("");
-
-  //!------------------------------
-  // useEffect(() => {
-  //   if (localStorage.getItem("data") === null) {
-  //     let shouldRun = true;
-  //     const fetchConvertData = async () => {
-  //       const { data } = await currencyRoot.get(`convert`, {
-  //         params: {
-  //           q: "USD_ILS,ILS_USD",
-  //         },
-  //       });
-  //       shouldRun && setCurrency(data);
-  //       localStorage.setItem("data", JSON.stringify(data));
-  //     };
-  //     fetchConvertData();
-  //     return () => {
-  //       shouldRun = false;
-  //     };
-  //   }
-  // }, []);
-  //!-----------------------
-  // useEffect(() => {
-  //   let shouldRun = true;
-  //   const fetchConvertData = async () => {
-  //     const { data } = await currencyRoot.get(`convert`, {
-  //       params: {
-  //         q: "USD_ILS,ILS_USD",
-  //       },
-  //     });
-  //     shouldRun && setCurrency(data);
-  //   };
-  //   fetchConvertData();
-  //   return () => {
-  //     shouldRun = false;
-  //   };
-  // }, []);
-
-  useEffect(() => {
-    const currenciesFromApi = async () => {
-      const rate = await getRate();
-      setRatePairs(rate);
-    };
-    currenciesFromApi();
-    return () => {};
-  }, []);
-
-  const handelInput = (input) => {
-    setSearchField(input);
-  };
-  const getCurencyId = (childDta) => {
-    setCurencyID(childDta);
-  };
-  //!--------------
-  const currencyObj = JSON.parse(localStorage.getItem("data"));
-  const vall = Object.values(currencyObj);
-  //!--------------
-
   return (
     <div className="App">
-      {/* <Log /> */}
-      {/* <Login /> */}
-      <Header />
-      <Rates />
-      <UserInfo id={1} />
-      <Account id={1} rate={2} />
-
-      {/* <div className="convert">
-        <Inputs text="Amount" parentCallBack={handelInput} value={searchField} />
-        <br />
-        <br />
-        <ConvertionList text="Convert To" parentCallBack={getCurencyId} />
-        <h2> Total {searchField}</h2>
-      </div> */}
-      {/* <div className="convert">
-        <Inputs text="Amount" parentCallBack={handelInput} value={searchField} />
-        <br />
-        <br />
-        <ConvertionList text="From" parentCallBack={getCurencyId} />
-        <ConvertionList text="To" parentCallBack={getCurencyId} />
-        <br />
-        <h2> Total {searchField}</h2>
-      </div> */}
+      <BrowserRouter>
+        <Header />
+        <Switch>
+          <Route path="/" exact component={Homepage} />
+          <Route path="/rates" exact component={Rates} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/register" exact component={Register} />
+          {/* <Route path="/reset" exact component={Reset} /> */}
+          {/* <Route path="/info" exact component={UserInfo} /> */}
+          <Route path="/info" exact>
+            <UserInfo id={1} />
+          </Route>
+          <Route path="/wallet" exact>
+            <Account id={1} />
+          </Route>
+          {/* <Route path="/wallet" exact component={Account} /> */}
+          <Route component={NotFound} />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
+  // return (
+  //   <div className="App">
+  //     {/* <Login /> */}
+  //     <Header />
+  //     <Rates />
+  //     <UserInfo id={1} />
+  //     <Account id={1} rate={2} />
+  //   </div>
+  // );
 }
 
 export default App;

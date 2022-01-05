@@ -1,0 +1,15 @@
+.main-homepage {
+  background: url(../images/pexels-indra-gunawan-313032.jpg);
+  height: 91vh;
+  position: relative;
+}
+.main-homepage::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  opacity: 0.9;
+}

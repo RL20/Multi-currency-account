@@ -1,0 +1,69 @@
+/***********************************************************************************************************************
+ *
+ * Pini's Spinners
+ *
+ **********************************************************************************************************************/
+.background-spinner {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    /* background: cadetblue; */
+    opacity: 0.8;
+}
+
+.spinner-1 {
+    justify-self: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px solid grey;
+    border-top: 5px solid orange;
+    animation: spin 1s linear infinite;
+}
+
+.spinner-2 {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border-top: 5px solid #f00;
+    border-right: 5px solid transparent;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner-3 {
+    display: flex;
+    justify-content: space-around;
+    width: 120px;
+    background: cadetblue;
+}
+
+.dot-1,
+.dot-2,
+.dot-3 {
+    height: 20px;
+    width: 20px;
+    background: #f00;
+    border-radius: 50%;
+    animation: change-color 1s linear infinite;
+}
+
+.dot-2 {
+    animation-delay: 0.5s;
+}
+
+.dot-3 {
+    animation-delay: 0.75s;
+}
+
+@keyframes change-color {
+    to {
+        background: gray;
+    }
+}

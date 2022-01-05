@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-// import fb_login from '../../assets/images/fb_login.png';
-import { auth, signInWithEmailAndPassword, signInWithGoogle, signInWithFacebook, userExistsInDB, setUserInDB } from "../../utils/firebase.js";
+import { auth, signInWithEmailAndPassword, signInWithGoogle } from "../firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
-import "./Login.css";
-import { DEFAULT_COLLECTION_LIST } from "../../utils/collectionsUtils";
-import Spinner from "../../components/Spinner/Spinner";
+import "../styles/Login.css";
+// import Spinner from "../../components/Spinner/Spinner";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -15,35 +13,18 @@ function Login() {
 
   useEffect(() => {
     // console.log('login user: ', user);
-    const saveUserInFirestore = async () => {
-      try {
-        const userExists = await userExistsInDB(user.uid);
-        // console.log('userExists: ', userExists);
-
-        if (!userExists) {
-          const setUserRes = await setUserInDB(user.uid, {
-            displayName: user.displayName,
-            email: user.email,
-            collections: DEFAULT_COLLECTION_LIST,
-          });
-          console.log("setUserFirestore: ", setUserRes);
-        }
-      } catch (err) {
-        console.log("setUserFirestore error: ", err);
-      }
-    };
-
     if (user) {
-      saveUserInFirestore();
-      history.replace("/");
+      console.log(user);
+      history.push("/");
     }
     //TODO:  if user is logged in - update login context and redirect to landing page
-  }, [user, loading, history]);
+  }, [user, history]);
 
   if (loading) {
     return (
       <div className="login">
-        <Spinner />
+        {/* <Spinner /> */}
+        loading...
       </div>
     );
   }
@@ -59,11 +40,11 @@ function Login() {
         <button className="login__btn login__google" onClick={signInWithGoogle}>
           Login with Google
         </button>
-
+        {/* 
         <div className="login__btn login__facebook" onClick={signInWithFacebook}>
           <img src={fb_login} alt="fb_login" />
           Login with Facebook
-        </div>
+        </div> */}
         <div>
           <Link to="/reset">Forgot Password</Link>
         </div>
