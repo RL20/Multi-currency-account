@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useEffect } from "react/cjs/react.development";
+import React, { useState, useEffect } from "react";
+// import { useEffect } from "react/cjs/react.development";
 import { Dropdown } from "semantic-ui-react";
 // import countriesCodes from "../countriesCode.js";
 
@@ -9,12 +9,15 @@ import { Dropdown } from "semantic-ui-react";
 
 const ShowList = ({ options, getSelected, valueFromfather }) => {
   const DropdownExampleSearchSelection = () => <Dropdown value={valueFromfather} placeholder="Select Country" fluid search selection options={countryOptions} onChange={handleDropDownSelect} />;
-
+  // console.log(`show`);
   const [selectedOption, setSelectedOption] = useState("");
-
+  // console.log(`selected`, selectedOption);
   useEffect(() => {
     getSelected(selectedOption);
   }, [selectedOption, getSelected]);
+  // useEffect(() => {
+  //   getSelected(selectedOption);
+  // }, [getSelected, options, selectedOption]);
 
   const countryOptions = options.map((country, i) => {
     // console.log(`country.id.`, country.id);

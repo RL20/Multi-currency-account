@@ -87,42 +87,43 @@ function Rates() {
     setFromCurrency(toCurrency);
     setToCurrency(temp);
   };
-  const rateFromInput = inputValue && ratePairs && inputValue * ratePairs[`${fromCurrency}_${toCurrency}`].toFixed(2);
+  const rateFromInput = inputValue * ratePairs[`${fromCurrency}_${toCurrency}`]?.toFixed(2);
+  // const rateFromInput = inputValue && ratePairs && inputValue * ratePairs[`${fromCurrency}_${toCurrency}`]; //.toFixed(2);
   const rateFromInputPrint = `${inputValue} ${fromCurrency} = ${rateFromInput} ${toCurrency} `;
   console.log("rateFromInput", typeof rateFromInput);
   return (
     <div className="main">
-      <div class="wrapper">
+      <div className="wrapper">
         <header>Currency Converter</header>
         <form action="#">
-          <div class="amount">
+          <div className="amount">
             <p>Enter Amount</p>
             <input type="text" onChange={(e) => handelInput(e.target.value)} />
           </div>
-          <div class="drop-list">
-            <div class="from">
+          <div className="drop-list">
+            <div className="from">
               <p>From</p>
-              <div class="select-box">
+              <div className="select-box">
                 {currencies && <ShowList options={res} getSelected={getSelectedFrom} valueFromfather={fromCurrency} />}
                 {/* <img src="https://flagcdn.com/48x36/us.png" alt="flag" />
                 <select> {cur} </select> */}
                 {/*<select> {<!-- Options tag are inserted from JavaScript -->} </select>*/}
               </div>
             </div>
-            <div class="icon" onClick={switchOrder}>
-              <i class="fas fa-exchange-alt"></i>
+            <div className="icon" onClick={switchOrder}>
+              <i className="fas fa-exchange-alt"></i>
             </div>
-            <div class="to">
+            <div className="to">
               <p>To</p>
-              <div class="select-box">
+              <div className="select-box">
                 {/* <img src="https://flagcdn.com/48x36/np.png" alt="flag" />
                 <select> {cur}</select> */}
                 {currencies && <ShowList options={res} getSelected={getSelectedTo} valueFromfather={toCurrency} />}
               </div>
             </div>
           </div>
-          <div class="exchange-rate">{message}</div>
-          <div class="exchange-rate">{inputValue && rateFromInputPrint}</div>
+          <div className="exchange-rate">{message}</div>
+          <div className="exchange-rate">{inputValue && rateFromInputPrint}</div>
           <button onClick={insert}>Get Exchange Rate</button>
         </form>
       </div>
